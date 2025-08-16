@@ -2,18 +2,81 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Simple Chat App</title>
+  <title>Login/Register</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>ChatApp</h1>
-  <div id="chat"></div>
-  <form id="form" autocomplete="off">
-    <input id="user" placeholder="Your name" required />
-    <input id="input" placeholder="Type a message..." required />
-    <button>Send</button>
-  </form>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="client.js"></script>
+  <button id="toggle-dark" aria-label="Toggle dark mode">🌙</button>
+  <div class="lp-shell">
+    <!-- Left: Form -->
+    <section class="lp-left">
+      <div class="lp-card">
+        <h1 class="lp-title">Welcome</h1>
+        <p class="lp-subtitle">Sign in to continue</p>
+        <form id="login-form" autocomplete="off" class="lp-form">
+          <label for="login-username">Username</label>
+          <input id="login-username" name="username" placeholder="Username" required autocomplete="username" />
+          <label for="login-password">Password</label>
+          <input id="login-password" name="password" type="password" placeholder="Password" required autocomplete="current-password" />
+          <div class="lp-actions">
+            <button type="submit" class="btn-primary">Log in</button>
+          </div>
+        </form>
+        <div class="lp-sep"></div>
+        <h2 class="lp-subtitle mt">New here?</h2>
+        <form id="register-form" autocomplete="off" class="lp-form">
+          <label for="reg-username">Username</label>
+          <input id="reg-username" name="username" placeholder="Choose a username" required />
+          <label for="reg-password">Password</label>
+          <input id="reg-password" name="password" type="password" placeholder="Choose a password" required />
+          <div class="lp-actions">
+            <button type="submit" class="btn-secondary">Register</button>
+          </div>
+        </form>
+        <div id="message" class="lp-message" role="alert" aria-live="assertive"></div>
+      </div>
+    </section>
+    <!-- Right: Image -->
+    <aside class="lp-right">
+      <div class="lp-hero">
+        <img src="shree.jpg" alt="Hero" class="lp-hero-img" />
+      </div>
+    </aside>
+  </div>
+  <script>
+    const toggleBtn = document.getElementById('toggle-dark');
+    const setTheme = (mode) => {
+      if (mode === 'dark') { document.body.classList.add('dark-mode'); toggleBtn.textContent = '☀️'; }
+      else { document.body.classList.remove('dark-mode'); toggleBtn.textContent = '🌙'; }
+    };
+    setTheme(localStorage.getItem('theme') || 'dark');
+    toggleBtn.onclick = () => {
+      const next = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
+      localStorage.setItem('theme', next); setTheme(next);
+    };
+    const messageDiv = document.getElementById('message');
+    document.getElementById('login-form').onsubmit = async (e) => {
+      e.preventDefault();
+      const username = e.target['login-username'].value.trim();
+      const password = e.target['login-password'].value.trim();
+      const res = await fetch('/login', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      const text = await res.text();
+      if (res.ok) location.href = '/chat'; else messageDiv.textContent = text;
+    };
+    document.getElementById('register-form').onsubmit = async (e) => {
+      e.preventDefault();
+      const username = e.target['reg-username'].value.trim();
+      const password = e.target['reg-password'].value.trim();
+      const res = await fetch('/register', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      const text = await res.text();
+      messageDiv.textContent = text;
+    };
+  </script>
 </body>
 </html>

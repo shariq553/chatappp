@@ -19,7 +19,9 @@
   },
   "homepage": "https://github.com/shariq553/chatappp#readme",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "express": "^5.1.0",
+    "express-session": "^1.18.2",
     "socket.io": "^4.8.1",
     "sqlite3": "^5.1.7"
   }

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chat – Private First</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <button id="toggle-dark">🌙</button>
+  <div class="chat-shell">
+    <aside class="chat-sidebar">
+      <div class="cs-header">
+        <h2>Your Babies</h2>
+      </div>
+      <form id="add-baby-form" class="cs-add" autocomplete="off">
+        <input id="baby-username" placeholder="Add baby's username" required />
+        <button type="submit" class="btn-primary">Add</button>
+      </form>
+      <div id="baby-message" class="lp-message" role="alert" aria-live="polite"></div>
+      <ul id="babies-list" class="cs-list" role="listbox" aria-label="Contacts"></ul>
+    </aside>
+    <main class="chat-main">
+      <section id="private-chat-section" class="cm-panel" hidden>
+        <div class="cm-header">
+          <h3>Private with <span id="active-baby"></span></h3>
+        </div>
+        <!-- Clear Private Chat Button -->
+        <button id="clear-private-chat" class="btn btn-clear" style="margin-top:8px; margin-bottom:12px;" hidden>Clear Private Chat</button>
+
+        <div id="private-chat" class="cm-window" role="log" aria-live="polite" aria-relevant="additions"></div>
+        <form id="private-form" class="cm-form" autocomplete="off">
+          <input id="private-input" placeholder="Type a private message..." required />
+          <button type="submit" class="btn-primary">Send</button>
+        </form>
+      </section>
+      <section class="cm-panel">
+        <div class="cm-header">
+          <h3>Population Group</h3>
+        </div>
+        <div id="population-chat" class="cm-window" role="log" aria-live="polite" aria-relevant="additions"></div>
+
+        <!-- Clear Population Chat Button -->
+        <button id="clear-population-chat" class="btn btn-clear" style="margin-top:8px;">Clear Population Chat</button>
+
+        <div id="typing-indicator" class="typing-indicator"></div>
+        <form id="population-form" class="cm-form" autocomplete="off">
+          <input id="population-input" placeholder="Type in population..." required />
+          <button type="submit" class="btn-secondary">Send</button>
+        </form>
+      </section>
+    </main>
+  </div>
+  <a href="/logout" id="logout-link">Logout</a>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const toggleBtn = document.getElementById('toggle-dark');
+    const applyTheme = (mode) => {
+      if (mode === 'dark') { document.body.classList.add('dark-mode'); toggleBtn.textContent = '☀️'; }
+      else { document.body.classList.remove('dark-mode'); toggleBtn.textContent = '🌙'; }
+    };
+    applyTheme(localStorage.getItem('theme') || 'dark');
+    toggleBtn.onclick = () => {
+      const next = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
+      localStorage.setItem('theme', next); applyTheme(next);
+    };
+  </script>
+  <script src="client.js"></script>
+</body>
+</html>
