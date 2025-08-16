@@ -1,0 +1,10 @@
+body { font-family: sans-serif; background: #f7f7f7; }
+h1 { color: #1877f2; }
+#chat { height: 300px; width: 100%; overflow-y: auto; background: #fff; border: 1px solid #ddd; margin-bottom: 10px; padding: 5px; }
+.message { margin-bottom: 7px; transition: background 0.2s; }
+.message:hover { background: #eeebff; }
+.user { font-weight: bold; color: #1877f2; }
+.ts { font-size: 0.8em; color: #888; }
+form { display: flex; gap: 6px; }
+input { flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 3px;}
+button { padding: 8px 14px; background: #1877f2; border: none; color: #fff; border-radius: 3px;}
