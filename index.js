@@ -43,7 +43,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const sessionMiddleware = session({
-  secret: 'your_secret_key_here',
+  secret: 'your_secret_key_here', // Replace in production
   resave: false,
   saveUninitialized: false,
 });
@@ -89,7 +89,6 @@ app.get('/logout', (req, res) => {
   req.session.destroy(() => res.redirect('/'));
 });
 
-// Validate baby exists before adding
 app.post('/add-baby', (req, res) => {
   if (!req.session.user) return res.status(401).send('Please log in');
   const { baby } = req.body;
@@ -108,7 +107,6 @@ app.post('/add-baby', (req, res) => {
   });
 });
 
-// Remove baby route
 app.post('/remove-baby', (req, res) => {
   if (!req.session.user) return res.status(401).send('Please log in');
   const { baby } = req.body;
@@ -120,7 +118,6 @@ app.post('/remove-baby', (req, res) => {
   });
 });
 
-// Delete population chat history from current user
 app.post('/delete-population-history', (req, res) => {
   if (!req.session.user) return res.status(401).send('Please log in');
   const user = req.session.user;
@@ -130,7 +127,6 @@ app.post('/delete-population-history', (req, res) => {
   });
 });
 
-// Delete private chat history between current user and a baby
 app.post('/delete-private-history/:baby', (req, res) => {
   if (!req.session.user) return res.status(401).send('Please log in');
   const user = req.session.user;
